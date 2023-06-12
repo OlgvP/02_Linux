@@ -113,7 +113,7 @@ Read the following [article](https://ryanstutorials.net/linuxtutorial/piping.php
     > Your answer : Apache HTTP Server, Microsoft Internet Information Services (IIS)
 
 3. On your student machine, create a temporary http server with python, on port ``5000``. Then on your kali machine, open a browser and go to the address ``10.12.181.X:``.
-    > Your command : 
+    > Your command : python3 -m http.server 5000
 
 4. Let's imagine that a hacker owns the domain name ``g00gle.com``, which tool would allow him to obtain an ssl certificate (https) very easily?
     > Your answer :
