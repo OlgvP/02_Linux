@@ -116,10 +116,10 @@ Read the following [article](https://ryanstutorials.net/linuxtutorial/piping.php
     > Your command : python3 -m http.server 5000
 
 4. Let's imagine that a hacker owns the domain name ``g00gle.com``, which tool would allow him to obtain an ssl certificate (https) very easily?
-    > Your answer :
+    > Your answer : He can obtain an ssl certificate by using https://www.sslforfree.com/
 
 5. On a linux machine, what tool could you use to have a self-signed SSL certificate on your local machine (localhost) ? 
-    > Your answer : 
+    > Your answer : we can install openSSL by using command: "sudo apt-get install openssl", then navigate directory where you want to generate your ssl, then generate private key using: "openssl genpkey -algorithm RSA -out private.key"
 
 6. On your student machine, install the ftp service and connect from your kali machine.
     > No answer required
