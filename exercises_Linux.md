@@ -125,19 +125,19 @@ Read the following [article](https://ryanstutorials.net/linuxtutorial/piping.php
     > No answer required
 
 7. What is the default port for ftp? 
-    > Your answer :
+    > Your answer : port 21 for the command port and port 20 for the data port.
 
 8. Is the ftp protocol secured?
-    > Your answer :
+    > Your answer : FTP was not built to be secure. It is generally considered to be an insecure protocol because it relies on clear-text usernames and passwords for authentication and does not use encryption. Data sent via FTP is vulnerable to sniffing, spoofing, and brute force attacks, among other basic attack methods.
 
 9. On your student machine, install the telnet service and connect from your kali machine.
     > No answer required
 
 10. What is the default port for telnet? 
-    > Your answer :
+    > Your answer : The IPv4 Telnet service port number is 23.
 
 11. Is the telnet protocol secured?
-    > Your anbswer :
+    > Your anbswer : Telnet is inherently insecure. Credential information (usernames and passwords) submitted through telnet is not encrypted and is therefore vulnerable to identity theft.
     
 12. Create a share file with samba between your Kali machine and your student machine.
     > No answer required
