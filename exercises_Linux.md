@@ -110,7 +110,7 @@ Read the following [article](https://ryanstutorials.net/linuxtutorial/piping.php
     > No answer required
 
 2. What other well-known service could be used instead of nginx? 
-    > Your answer :
+    > Your answer : Apache HTTP Server, Microsoft Internet Information Services (IIS)
 
 3. On your student machine, create a temporary http server with python, on port ``5000``. Then on your kali machine, open a browser and go to the address ``10.12.181.X:``.
     > Your command : 
