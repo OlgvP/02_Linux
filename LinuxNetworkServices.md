@@ -51,20 +51,8 @@ Set up the following Linux infrastructure:
 	  version: 2
       renderer: networkd
 # *2. Install Firewall, Harden ssh, Client config, Server config, Test connection:*
-	I used documentation: Server_hardening[Uploading
-## Motivation
 
-The first thing admins usually do after logging into an _off-the-shelf_ server is to secure it.
-
-While there are a lot of advanced techniques and methods that can be used to improve the security of a new server and help keep it protected from various threats, this guide will only focus on the essentials.
-
-## Assumptions
-
--   you have ssh access to a VPS (Debian/-based) from a GNU/Linux machine
--   basic terminal and nano editor knowledge
--   ~1 hour free time
-
-## 1. Add new user
+## -Add new user
 
 _Note: run `ssh root@server_ip` in a terminal if you are not connected. Replace server_ip with your VPS IP address._
 
@@ -76,7 +64,7 @@ Enter a strong password and hit Enter to skip optional fields.
 
 `usermod -aG sudo newuser`
 
-## 2. Install firewall
+## -Install firewall
 
 Update and install a basic firewall via apt:
 
@@ -114,9 +102,7 @@ _Note: later you will probably need to adjust the firewall settings to allow tra
 
 You can now close the connection to the server with `exit`.
 
-## 3. Harden SSH
-
-### 3.1 Client config
+###  -Client config
 
 On your local machine, open the `ssh_config` file:
 
@@ -135,7 +121,7 @@ KexAlgorithms curve25519-sha256
 
 Save the file with `CTRL+X` > `Y` > press Enter.
 
-### 3.2 Server config
+### -Server config
 
 Open two terminal tabs/windows and establish two separate SSH connections to the server, for backup purposes:
 
@@ -184,7 +170,7 @@ _Note: if you change the default ssh port, you need to update ufw rules; example
 
 Save the file with `CTRL+X` > `Y` > press Enter.
 
-### 3.2 Test connection
+### -Test connection
 
 Restart the sshd daemon:
 
@@ -195,18 +181,7 @@ Open another terminal tab/window and try to SSH to the server:
 `ssh newuser@server_ip`
 
 If it doesn’t work, check for configuration errors using the other terminal and then try again.
-
 If successful, you will be able to ssh with `newuser` to the server from now on, and install any software you want.
-
-## Observations
-
--   use strong and random passwords for system logins to protect against brute-force attacks
--   generate and use strong SSH keys protected by passphrases
--   update system regularly; you could automate the process with a _cron_ job
--   optionally install _Fail2Ban_ to monitor system logs and protect against DDoS attacks
-
-That’s it for this basic server security guide. Reach out to me if you run into any trouble. Good luck! Server_hardenning.md…]()
-
 
 # *3. Installation and configuration DHCP server on Ubuntu machine:*
 	
