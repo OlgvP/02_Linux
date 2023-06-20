@@ -38,7 +38,7 @@ Set up the following Linux infrastructure:
 
 # *1. Giving IP address to my Ubuntu Server:*
 	command: 
-	  >	sudo nano 00-installer-config.yaml
+	  	sudo nano 00-installer-config.yaml
 	add:
 	network:
 	  ethernets:
@@ -56,16 +56,16 @@ Set up the following Linux infrastructure:
 # *3. Installation and configuration DHCP server on Ubuntu machine:*
 	
 	command:
-	  >	-ip -a: 
+	  	-ip -a: 
 		 enp0s3 ip= 192.168.2.4/24
 	command: 
-	  >	sudo apt install -y isc-dhcp-server
+	  	sudo apt install -y isc-dhcp-server
 	command: 
-	  >	sudo nano /etc/default/isc-dhcp-server
+	  	sudo nano /etc/default/isc-dhcp-server
 	add:
 		INTERFACESv4="enp0s3"
 	command:
-	  >	sudo nano /etc/dhcp/dhcpd.conf
+	  	sudo nano /etc/dhcp/dhcpd.conf
 	add:
 		option domain-name "example.org";
 		option domain-name-servers server.example.org;
@@ -83,32 +83,32 @@ Set up the following Linux infrastructure:
 		default-lease-time 600;
 		max-lease-time 7200;
 	command:
-	  >	sudo systemctl restart isc-dhcp-server
-	  >	sudo systemctl status isc-dhcp-server
+	  	sudo systemctl restart isc-dhcp-server
+	  	sudo systemctl status isc-dhcp-server
 	Checking port for dhcp: 
 	command: 
-	  >	sudo ss -ulpn | grep dhcp
+	  	sudo ss -ulpn | grep dhcp
 		output:
 			dhcp-port 67
 		 
 	Adding port to my firewall:
 	command: 
-	  >	sudo ufw allow 67/udp
+	  	sudo ufw allow 67/udp
 	command: 
-	  >	sudo ufw status
+	  	sudo ufw status
 	
 # *4. Installation and configuration DNS server on my Ubuntu machine:*
 	command: 
-	  > sudo apt update
-	  > sudo apt install bind9 bind9-utils bind9-dnsutils -y
+	   sudo apt update
+	   sudo apt install bind9 bind9-utils bind9-dnsutils -y
 		 // Check if named service enabled
-      > sudo systemctl is-enabled named
+           sudo systemctl is-enabled named
 		 // Check named service status
-	  >	sudo systemctl status named
-	  > sudo nano /etc/default/named:
+	   sudo systemctl status named
+	   sudo nano /etc/default/named:
 		add:
 			OPTIONS="-4 -u bind"
-	  >	sudo nano /etc/bind/named.conf.options:
+	  	sudo nano /etc/bind/named.conf.options:
 		add:
 			// listen port and address
 			listen-on port 53 { localhost; 192.168.2.4; }
@@ -125,7 +125,7 @@ Set up the following Linux infrastructure:
 	Verify the BIND configuration:
 		
 		command: 
-		  >	sudo named-checkconf
+		  	sudo named-checkconf
 		
 		If there’s no output, the BIND configurations
 		are correct without any error.
@@ -133,7 +133,7 @@ Set up the following Linux infrastructure:
 	Setting Up DNS Zones:
 	
 	command: 
-	  >	sudo nano /etc/bind/named.conf.local :
+	  	sudo nano /etc/bind/named.conf.local :
 		add:
 		zone "example.org" {
 			type master;
@@ -151,25 +151,25 @@ Set up the following Linux infrastructure:
 	/etc/bind/zones
 	
 	command:
-	  >	sudo -mkdir -p /etc/bind/zones/   
+	  	sudo -mkdir -p /etc/bind/zones/   
 	
 	Copy the default forward and reverse zones 
 	configuration to the directory:
 	commands:
 			// Copy default forward zone
-			  >	sudo cp /etc/bind/db.local /etc/bind/zones/forward.atadomain.io
+			  	sudo cp /etc/bind/db.local /etc/bind/zones/forward.atadomain.io
 
 			// Copy default reverse zone
-			  >	sudo cp /etc/bind/db.127 /etc/bind/zones/reverse.atadomain.io
+			  	sudo cp /etc/bind/db.127 /etc/bind/zones/reverse.atadomain.io
 
 			// List contents of the /etc/bind/zones/ directory
-			  >	ls /etc/bind/zones/
+			  	ls /etc/bind/zones/
 				
 	Edit the forward zone configuration.  This configuration will translate
 	the domain name to the correct IP address of the server:
 	
 	command: 
-	  >	sudo nano /etc/bind/zones/forward.example.org:
+	  	sudo nano /etc/bind/zones/forward.example.org:
 	add:
 				;
 				; BIND data file for the local loopback interface
@@ -230,56 +230,56 @@ Set up the following Linux infrastructure:
 	Checking the configuration:
 		command: 
 			// Checking the main configuration for BIND
-		  >	sudo named-checkconf
+		  	sudo named-checkconf
 
 			// Checking forward zone forward.example.org
 			command:
-			>  sudo named-checkzone example.org /etc/bind/zones/forward.example.org
+			  sudo named-checkzone example.org /etc/bind/zones/forward.example.org
 			If configuration is correct we recive similar output:
 				zone example.org/IN: loaded serial 2
 				OK
 			// Checking reverse zone reverse.example.org
 			command:
-			>  sudo named-checkzone example.org /etc/bind/zones/reverse.example.org
+			  sudo named-checkzone example.org /etc/bind/zones/reverse.example.org
 			If configuration is correct we recive similar output:
 				zone example.org/IN: loaded serial 1
 				OK
 	Opening DNS Port with UFW Firewall:
 		command: 
-		  >	sudo ufw app list
+		  	sudo ufw app list
 		We should see output:
 			Availbe appilations: Bind9, OpenSSH
 		command:
-		  >	sudo ufw allow Bind9
+		  	sudo ufw allow Bind9
 		Expected output:
 				Rule added
 				Rule added (v6)
 		Checking enabled rules on the UFW firewall:
 		command: 
-		  >	sudo ufw status
+		  	sudo ufw status
 		Output: Bind9 application on the list.
 		
 	Verifying BIND DNS Server Installation:
 	 
-		# Checking the domain names
+		// Checking the domain names
 		commands:
-		  >	dig @192.168.2.4 www.example.org
-		  >	dig @192.168.2.4 mail.example.org
-		  >	dig @192.168.2.4 vault.example.org
+		  	dig @192.168.2.4 www.example.org
+		  	dig @192.168.2.4 mail.example.org
+		  	dig @192.168.2.4 vault.example.org
 			
 		All addresser should be resolved to the right server IP
 		Next, run the command below to verify the MX record for the  domain.
-		  >	dig @192.168.2.4 example.org MX
+		  	dig @192.168.2.4 example.org MX
 		Output: domain has the MX record
 		
 	Commands to verify the PTR record or reverse zone for the server IP addresses 
 	If BIND installation is successful, each IP address will be resolved
 	to the domain name defined on the reverse.example.org configuration.
-		  >	dig @192.168.2.4 -x 192.168.2.4
-		  >	dig @192.168.2.4 -x 192.168.2.6
+		  	dig @192.168.2.4 -x 192.168.2.4
+		  	dig @192.168.2.4 -x 192.168.2.6
 	Changing DNS server for my Ubuntu server:
 		command:
-		  >	sudo nano /etc/resolv.conf:
+		  	sudo nano /etc/resolv.conf:
 			add:
 			nameserver 192.168.2.4
 			
@@ -288,17 +288,17 @@ Set up the following Linux infrastructure:
 			
 # *5.Installation and configuration MariaDB:*
 	commands:
-	  >	sudo apt update
-	  >	sudo apt install mariadb-server mariadb-client -y
-	  >	sudo systemctl status mariadb
+	  	sudo apt update
+	  	sudo apt install mariadb-server mariadb-client -y
+	  	sudo systemctl status mariadb
 	Output: mariadb should be actived
 	Configuration to improve the security of the MariaDB database engine:
 	commands:
-	  >	sudo mysql_secure_installation
+	  	sudo mysql_secure_installation
 		For all the question press Y
 	Configure A Password-authenticated Administrative User:
-	-login as the root user:
-	  >	sudo mariadb -u root -p
+	login as the root user:
+	  	sudo mariadb -u root -p
 	Create a regular user:
 		-CREATE USER
 		-'adminuser'@'localhost' IDENTIFIED BY 'place_for password_for_adminuser'
@@ -306,34 +306,34 @@ Set up the following Linux infrastructure:
 	grant all privileges to admin_user. This effectively
 	assigns all the database root user’s permissions to the user:
 	command:
-	  >	GRANT ALL PRIVILEGES ON *.* TO 'admin_user'@'localhost';
+	  	GRANT ALL PRIVILEGES ON *.* TO 'admin_user'@'localhost';
 	To apply changes:
 		FLUSH PRIVILEGES;
 	Exit the database:
 		EXIT;
 	Test MariaDB:
-	  >	sudo mariadb -u adminuser -p
+	  	sudo mariadb -u adminuser -p
 	To check the existing databases, run the command:
 		SHOW DATABASES;
 # *6.Installation and configuration apache2*
 	command:
-	  >	sudo apt update
-	  >	sudo apt install apache2
+	  	sudo apt update
+	  	sudo apt install apache2
 	Before testing Apache, it’s necessary to modify the firewall
 	settings to allow outside access to the default web ports:
 		command:
-		  >	sudo ufw app list
-		  >	sudo ufw allow 'Apache'
-		  >	sudo ufw status
+		  	sudo ufw app list
+		  	sudo ufw allow 'Apache'
+		  	sudo ufw status
 		The output will provide a list of allowed HTTP traffic
 	Checking web server:
-	  >	sudo systemctl status apache2
+	  	sudo systemctl status apache2
 	At this moment we can type http://192.168.2.4 (address ip of my ubuntu server)
 	and see the default Ubuntu 22.04 Apache web page;
 # *7. Installation and configuration PHP*
 	commands:
-	  >	sudo apt update
-	  >	sudo apt install php libapache2-mod-php php-mysql
+	  	sudo apt update
+	  	sudo apt install php libapache2-mod-php php-mysql
 		
 	Modify the way that Apache serves files. Currently, 
 	if a user requests a directory from the server, Apache will first search for a file
@@ -341,7 +341,7 @@ Set up the following Linux infrastructure:
 	you can set Apache to search for an index.php file first:
 	
 	commands: 
-	  >	sudo nano /etc/apache2/mods-enabled/dir.conf
+	  	sudo nano /etc/apache2/mods-enabled/dir.conf
 	Move the PHP index file to the first position after
 	the DirectoryIndex specification, like in the following:
 		<IfModule mod_dir.c>
@@ -349,20 +349,20 @@ Set up the following Linux infrastructure:
 		</IfModule>
 	Reload Apache’s configuration:
 	command:
-	  >	sudo systemctl reload apache2
+	  	sudo systemctl reload apache2
 	Checking status:
-	  >	sudo systemctl status apache2
+	  	sudo systemctl status apache2
 	
 	Creating a Virtual Host for Website:
 		commands:
-		  >	sudo mkdir /var/www/example.org
+		  	sudo mkdir /var/www/example.org
 	Next, assign ownership of the directory with the $USER environment variable,
 	which will reference current system user:
 	command:
-	  >	sudo chown -R $USER:$USER /var/www/example.org	
+	  	sudo chown -R $USER:$USER /var/www/example.org	
 	Then, open a new configuration file in Apache’s sites-available directory:
 	command:
-	  >	sudo nano /etc/apache2/sites-available/example.org.conf
+	  	sudo nano /etc/apache2/sites-available/example.org.conf
 	This creates a new blank file. Add in the configuration:
 	
 		<VirtualHost *:80>
@@ -377,41 +377,41 @@ Set up the following Linux infrastructure:
 	Save and close file.
 	Use a2ensite to enable this virtual host:
 	command:
-	  >	sudo a2ensite example.org
+	  	sudo a2ensite example.org
 	To disable Apache’s default website:
 	command: 
-	  >	sudo a2dissite 000-default
+	  	sudo a2dissite 000-default
 		
 	To make sure your configuration file doesn’t contain syntax errors:
 	command:
-	  >	sudo apache2ctl configtest
+	  	sudo apache2ctl configtest
 	Reload Apache so these changes take effect:
 	command:
-	  >	sudo systemctl reload apache2
+	  	sudo systemctl reload apache2
 	command:
-	  >	sudo nano /etc/apache2/sites-available/000-default.conf
+	  	sudo nano /etc/apache2/sites-available/000-default.conf
 	add:
 		ServerName serverubuntu
 		ServerAlias www.serverubuntu
 	command:
-	  >	sudo nano /etc/apache2/apache2.conf
+	  	sudo nano /etc/apache2/apache2.conf
 	Add in last line:
 		ServerName 192.168.2.4
 	Close and save.
 	
 	command:
-	  >	sudo systemctl reload apache2
+	  	sudo systemctl reload apache2
 		
 	Testing PHP Processing on your Web Server:
 	command: 
-	  >	sudo nano /var/www/example.org/info.php
+	  	sudo nano /var/www/example.org/info.php
 	Add:
 		<?php
 		phpinfo();
 	Save and close.
 	*Glpi:*
 	command:
-	  >	sudo nano /etc/apache2/sites-available/glpi.conf
+	  	sudo nano /etc/apache2/sites-available/glpi.conf
 	add:
 	<VirtualHost *:80>
 		ServerName 192.168.2.4
@@ -428,11 +428,11 @@ Set up the following Linux infrastructure:
 	
 	Save and close.
 	commans:
-	  >	sudo a2ensite glpi.conf
-	  >	sudo systemctl restart apache2
+	  	sudo a2ensite glpi.conf
+	  	sudo systemctl restart apache2
 	Now we can finish installation typing http://192.168.2.4 in web browser.
 		command:
-		  >	sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+		  	sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
 		add:
 			bind-address 192.168.2.4
 
@@ -441,10 +441,10 @@ Set up the following Linux infrastructure:
 	
 # *8.Weekly backup for DHCP DNS MariaDB and apache2:*
 	Create a backup directory:
-	  >	sudo mkdir /backup
+	  	sudo mkdir /backup
 	After navigate to the directory /backup create a backup script file:
 	command:
-	  >	sudo nano backup_script.sh
+	  	sudo nano backup_script.sh
 		add: 
 			//!/bin/bash
 
@@ -472,7 +472,7 @@ Set up the following Linux infrastructure:
 			rm -rf ./zones ./apache2 ./php_files
 			
 		Save the file and exit. Make the backup script executable:
-		  >	sudo chmod +x backup_script.sh
+		  	sudo chmod +x backup_script.sh
 		  
 		Set up a weekly cron job to execute the backup script:
 			crontab -e
@@ -488,21 +488,21 @@ Set up the following Linux infrastructure:
 		
 # *9. Configuration Client machine Kali Linux:*
 	command: 
-	  >	sudo nano /etc/network/interfaces
+	  	sudo nano /etc/network/interfaces
 	Configuration the interface should look like:
 		auto eth0
 		iface eth0 inet dhcp 
 	To install LibreOffice, GIMP, and Mullvad browser on Kali Linux, I used the following commands:
 	
 	*LibreOffice:*
-	  >	sudo apt update
-	  >	sudo apt install libreoffice
+	  	sudo apt update
+	  	sudo apt install libreoffice
 	*GIMP:*
-	  >	sudo apt update
-	  >	sudo apt install gimp
+	  	sudo apt update
+	  	sudo apt install gimp
 	*Mullvad browser (Assuming it's available in the package repository):*
-	  >	sudo apt update
-	  >	sudo apt install mullvad
+	  	sudo apt update
+	  	sudo apt install mullvad
 
 At this point everything should work properly. 
 The project is done.
