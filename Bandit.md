@@ -1,4 +1,4 @@
-## Passwords for bantit levels I passed:**
+## Passwords for bantit levels I passed:
 
 -lvl 0-1   NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL
 
